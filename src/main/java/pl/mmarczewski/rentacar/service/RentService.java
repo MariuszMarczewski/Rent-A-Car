@@ -17,11 +17,11 @@ public class RentService {
         this.carRepository = carRepository;
     }
 
-    public List<Car> findAll(){
+    public List<Car> findAll() {
         return carRepository.findAll();
     }
 
-    public Long addCar(Car car){
+    public Long addCar(Car car) {
         return carRepository.save(car).getId();
     }
 
@@ -34,13 +34,13 @@ public class RentService {
     }
 
     public Car getCarByCarId(Long id) {
-        if (id != null) {
-            return carRepository.getOne(id);
-        }
-        throw new CarNotFoundException("Car is not available.");
+        return carRepository.findAll().stream()
+                .filter(car -> car.getId().equals(id))
+                .findFirst()
+                .orElseThrow(() -> new CarNotFoundException("Car is not available."));
     }
 
-    public Car rentCar(Long id){
+    public Car rentCar(Long id) {
         Car carToRent = carRepository.findAll().stream()
                 .filter(car -> car.getId().equals(id))
                 .filter(car -> car.getReturnDate() == null)
@@ -50,7 +50,7 @@ public class RentService {
         return carToRent;
     }
 
-    public Car returnCar(Long id){
+    public Car returnCar(Long id) {
         Car returnedCar = carRepository.findAll().stream()
                 .filter(car -> car.getId().equals(id))
                 .filter(car -> car.getReturnDate() == null)
@@ -59,6 +59,5 @@ public class RentService {
         returnedCar.setReturnDate(null);
         return returnedCar;
     }
-
 
 }
