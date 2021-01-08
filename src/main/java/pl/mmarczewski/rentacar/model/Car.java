@@ -29,6 +29,13 @@ public class Car {
         this.mileage = mileage;
     }
 
+    public Car(String mark, String model, Long mileage, LocalDate returnDate) {
+        this.mark = mark;
+        this.model = model;
+        this.mileage = mileage;
+        this.returnDate = returnDate;
+    }
+
     public Long getId() {
         return id;
     }

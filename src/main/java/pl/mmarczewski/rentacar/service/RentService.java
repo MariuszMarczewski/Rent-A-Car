@@ -7,6 +7,7 @@ import pl.mmarczewski.rentacar.repository.CarRepository;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.OptionalLong;
 
 @Service
 public class RentService {
@@ -26,7 +27,12 @@ public class RentService {
     }
 
     public void deleteCar(Long id) {
-        carRepository.deleteById(id);
+//        carRepository.deleteById(id);
+        Car carToDelete = carRepository.findAll().stream()
+                .filter(car -> car.getId().equals(id))
+                .findFirst()
+                .orElseThrow(() -> new CarNotFoundException("Car is not available."));
+        carRepository.delete(carToDelete);
     }
 
     public Car updateCar(Car car) {
