@@ -27,12 +27,7 @@ public class RentService {
     }
 
     public void deleteCar(Long id) {
-//        carRepository.deleteById(id);
-        Car carToDelete = carRepository.findAll().stream()
-                .filter(car -> car.getId().equals(id))
-                .findFirst()
-                .orElseThrow(() -> new CarNotFoundException("Car is not available."));
-        carRepository.delete(carToDelete);
+        carRepository.deleteById(id);
     }
 
     public Car updateCar(Car car) {
@@ -40,10 +35,8 @@ public class RentService {
     }
 
     public Car getCarByCarId(Long id) {
-        return carRepository.findAll().stream()
-                .filter(car -> car.getId().equals(id))
-                .findFirst()
-                .orElseThrow(() -> new CarNotFoundException("Car is not available."));
+        return carRepository.findById(id)
+                .orElseThrow(() -> new CarNotFoundException("Car is not available"));
     }
 
     public Car rentCar(Long id) {

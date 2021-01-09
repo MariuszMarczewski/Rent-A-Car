@@ -10,7 +10,6 @@ import pl.mmarczewski.rentacar.model.Car;
 import javax.transaction.Transactional;
 import static org.assertj.core.api.Assertions.assertThat;
 
-
 @SpringBootTest
 @ExtendWith(SpringExtension.class)
 class RentServiceTest {
@@ -40,9 +39,10 @@ class RentServiceTest {
         //when
         Long isToDelete = sut.addCar(car);
         sut.deleteCar(isToDelete);
+        int actual = sut.findAll().size();
 
         //then
-        assertThat(sut.getCarByCarId(5L)).isNull();
+        assertThat(actual).isEqualTo(4);
     }
 
     @Test
