@@ -11,6 +11,8 @@ import javax.transaction.Transactional;
 import java.time.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
 @ExtendWith(SpringExtension.class)
@@ -63,6 +65,22 @@ class RentServiceTest {
 
     @Test
     @Transactional
+    public void shouldReturnExceptionMessageIfGetCarByIdMethodThrowsException(){
+        // given
+        Exception exception = assertThrows(RuntimeException.class, () -> {
+            sut.getCarByCarId(6L);
+        });
+
+        // when
+        String expectedMessage = "Car is not available";
+        String actualMessage = exception.getMessage();
+
+        //then
+        assertTrue(actualMessage.contains(expectedMessage));
+    }
+
+    @Test
+    @Transactional
     public void shouldUpdateCar(){
         //given
         Car carToUpdate = new Car("Lada", "Samara", 25464L, null);
@@ -89,5 +107,35 @@ class RentServiceTest {
 
         //then
         assertThat(actual.getReturnDate()).isNull();
+    }
+
+    @Test
+    @Transactional
+    public void shouldReturnExceptionMessageIfReturnCarMethodThrowsException(){
+        // given
+        Exception exception = assertThrows(RuntimeException.class, () -> {
+            sut.returnCar(6L);
+        });
+
+        // when
+        String expectedMessage = "Car is not available";
+        String actualMessage = exception.getMessage();
+
+        //then
+        assertTrue(actualMessage.contains(expectedMessage));
+    }
+
+    @Test
+    @Transactional
+    public void shouldReturnCarWithReturnDateFixed(){
+        //given
+        Car carToRent = new Car("Lada", "Samara", 25464L, null);
+
+        //when
+        Long id = sut.addCar(carToRent);
+        Car actual = sut.rentCar(id);
+
+        //then
+        assertThat(actual.getReturnDate()).isNotNull();
     }
 }
