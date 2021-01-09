@@ -52,7 +52,6 @@ public class RentService {
     public Car returnCar(Long id) {
         Car returnedCar = carRepository.findAll().stream()
                 .filter(car -> car.getId().equals(id))
-                .filter(car -> car.getReturnDate() == null)
                 .findFirst()
                 .orElseThrow(() -> new CarNotFoundException("Car is not available."));
         returnedCar.setReturnDate(null);

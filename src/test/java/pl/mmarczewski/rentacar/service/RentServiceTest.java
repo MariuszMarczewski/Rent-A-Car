@@ -8,6 +8,8 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import pl.mmarczewski.rentacar.model.Car;
 
 import javax.transaction.Transactional;
+import java.time.*;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
@@ -45,7 +47,7 @@ class RentServiceTest {
         assertThat(actual).isEqualTo(4);
     }
 
-    @Test
+    @Test     /* this test method is to be executed separately */
     @Transactional
     public void shouldReturnCarById(){
         //given
@@ -59,4 +61,33 @@ class RentServiceTest {
         assertThat(actual).isEqualTo(car);
     }
 
+    @Test
+    @Transactional
+    public void shouldUpdateCar(){
+        //given
+        Car carToUpdate = new Car("Lada", "Samara", 25464L, null);
+        Long id = sut.addCar(carToUpdate);
+        Car car = new Car("Lada", "Niva", 25464L, null);
+
+        //when
+        Car actual = sut.updateCar(car);
+
+        //then
+        assertThat(actual).isEqualTo(car);
+    }
+
+    @Test
+    @Transactional
+    public void shouldReturnCarWithNullAsReturnDate() {
+        //given
+        Car car = new Car("Subaru", "WRC", 13872L,
+                LocalDate.of(2021, 12, 12));
+
+        //when
+        Long id = sut.addCar(car);
+        Car actual = sut.returnCar(id);
+
+        //then
+        assertThat(actual.getReturnDate()).isNull();
+    }
 }
