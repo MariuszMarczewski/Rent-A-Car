@@ -111,7 +111,7 @@ class RentServiceTest {
 
     @Test
     @Transactional
-    public void shouldReturnExceptionMessageIfReturnCarMethodThrowsException(){
+    public void shouldReturnExceptionMessageIfRentCarMethodThrowsException(){
         // given
         Exception exception = assertThrows(RuntimeException.class, () -> {
             sut.returnCar(6L);
@@ -137,5 +137,21 @@ class RentServiceTest {
 
         //then
         assertThat(actual.getReturnDate()).isNotNull();
+    }
+
+    @Test
+    @Transactional
+    public void shouldReturnExceptionMessageIfReturnCarMethodThrowsException(){
+        // given
+        Exception exception = assertThrows(RuntimeException.class, () -> {
+            sut.returnCar(6L);
+        });
+
+        // when
+        String expectedMessage = "Car is not available";
+        String actualMessage = exception.getMessage();
+
+        //then
+        assertTrue(actualMessage.contains(expectedMessage));
     }
 }
