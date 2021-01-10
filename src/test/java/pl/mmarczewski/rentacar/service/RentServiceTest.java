@@ -14,6 +14,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+/* Method shouldReturnCarById()
+to be tested individually
+NOT together with all rest test methods */
+
+
 @SpringBootTest
 @ExtendWith(SpringExtension.class)
 class RentServiceTest {
@@ -49,7 +54,7 @@ class RentServiceTest {
         assertThat(actual).isEqualTo(4);
     }
 
-    @Test     /* this test method is to be executed separately */
+    @Test
     @Transactional
     public void shouldReturnCarById(){
         //given
